@@ -5,12 +5,15 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Google Sheets setup
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+scope = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
 creds_dict = st.secrets["google"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-
 client = gspread.authorize(creds)
 sheet = client.open_by_key("1FH5hZvV4HM9WvIbNg9hc2lqMalghMES5OLB-f_NwKZY").sheet1
+
 
 # SQLite DB setup
 conn = sqlite3.connect('users.db', check_same_thread=False)
