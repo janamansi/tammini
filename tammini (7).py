@@ -1,49 +1,12 @@
+# app.py
 import streamlit as st
+st.set_page_config(page_title="منصة طَمّني", layout="centered", page_icon="🧠")
+
 import sqlite3
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-st.set_page_config(page_title="منصة طَمّني", layout="centered", page_icon="🧠")
-
-# 🌈 UI Customization
-st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-    html, body, .stApp {
-        background-color: #e6f7ff;
-        font-family: 'Cairo', sans-serif;
-        direction: rtl;
-    }
-    .stButton>button {
-        background-color: #66ccff;
-        color: white;
-        border-radius: 10px;
-        font-size: 18px;
-        padding: 10px 20px;
-        border: none;
-    }
-    .stButton>button:hover {
-        background-color: #4db8ff;
-    }
-    .stRadio>div {
-        background-color: #f2fbff;
-        padding: 10px;
-        border-radius: 10px;
-    }
-    h1, h2, h3 {
-        color: #005b99;
-        text-align: center;
-    }
-    .title-container {
-        background-color: #b3e0ff;
-        padding: 30px;
-        border-radius: 12px;
-        margin-bottom: 30px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 🗂️ Google Sheets
+# Google Sheets setup
 scope = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
@@ -53,7 +16,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 sheet = client.open_by_key("1FH5hZvV4HM9WvIbNg9hc2lqMalghMES5OLB-f_NwKZY").sheet1
 
-# 🗃️ SQLite
+# SQLite DB setup
 conn = sqlite3.connect('users.db', check_same_thread=False)
 c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -73,7 +36,6 @@ c.execute('''CREATE TABLE IF NOT EXISTS responses (
 )''')
 conn.commit()
 
-# 🧾 Functions
 def signup():
     st.subheader("🔐 تسجيل حساب جديد")
     username = st.text_input("اسم المستخدم")
@@ -82,9 +44,9 @@ def signup():
         try:
             c.execute("INSERT INTO users VALUES (?, ?)", (username, password))
             conn.commit()
-            st.success("تم التسجيل بنجاح.")
+            st.success("تم التسجيل! يمكنك الآن تسجيل الدخول.")
         except:
-            st.error("اسم المستخدم موجود بالفعل.")
+            st.error("اسم المستخدم مستخدم بالفعل.")
 
 def login():
     st.subheader("🔑 تسجيل الدخول")
@@ -95,21 +57,21 @@ def login():
         result = c.fetchone()
         if result:
             st.session_state['user'] = username
-            st.success("تم تسجيل الدخول.")
+            st.success("مرحباً بك، تم تسجيل الدخول.")
         else:
-            st.error("بيانات غير صحيحة.")
+            st.error("بيانات الدخول غير صحيحة.")
 
 def questionnaire():
     st.subheader("📝 التقييم النفسي")
     gender = st.radio("ما هو جنسك؟", ["ذكر", "أنثى"])
     age = st.radio("ما هي فئتك العمرية؟", ["18-29", "30-39", "40-49", "50+"])
 
-    q1_label = "س1: ھل ﺗﺟد ﻧﻔﺳك ﺗﻌﺎﻧﻲ ﻣن اﻟﺗﻔﻛﯾر اﻟﻣﻔرط أو اﻟﻘﻠق اﻟزاﺋد ﺗﺟﺎﻩ ﻣﺧﺗﻠﻓ اﻷﻣور اﻟﺣﯾﺎﺗﯾﺔ اﻟﻣﺣﯾطﺔ ﺑك، ﺳواء ﻛﺎﻧت ﻣﺗﻌﻠﻘﺔ ﺑﺎﻟﻌﻣل، اﻟدراﺳﺔ، اﻟﻣﻧزل، أو ﻏﯾرھﺎ ﻣن اﻟﺟواﻧب اﻟﯾوﻣﯾﺔ؟ اﻋط اﻣﺛﻠﺔ ﻋﻠﻰ ﺑﻌض ﻣن ھذه اﻷﻣور وﻛﯾف ﯾؤﺛراﻟﺗﻔﻛﯾر و اﻟﻘﻠق ﺑﮭﺎ ﻋﻠﻰ أﻓﻛﺎرك وﺳﻠوﻛك ﺧﻼل اﻟﯾوم."
-    q2_label = "س2: ھل ﺗواﺟﮫ ﺻﻌوﺑﺔ ﻓﻲ اﻟﺳﯾطرة ﻋﻠﻰ أﻓﻛﺎرك اﻟﻘﻠﻘﺔ أو اﻟﺗﺣﻛم ﻓﻲ ﻣﺳﺗوى اﻟﻘﻠق اﻟذي ﺗﺷﻌر ﺑﮫ، ﺑﺣﯾث ﺗﺷﻌر أن اﻷﻣر ﺧﺎرج ﻋن إرادﺗك أو أﻧﮫ ﻣﺳﺗﻣر ﻋﻠﻰ ﻧﺣو ﯾرھﻘك؟ اﺟﻌل اﺟﺎﺑﺗك ﺗﻔﺻﯾﻠﯾﺔ ﺑﺣﯾث ﺗوﺿﺢ ﻛﯾف ﯾﻛون ﺧﺎرج ﻋﻥ ارادﺗك او اﻟﻰ اي ﻣدى ﯾرھﻘك."
+    q1_label = "س1: ھل ﺗﺟد ﻧﻔﺳك ﺗﻌﺎﻧﻲ ﻣن اﻟﺗﻔﻛﯾر اﻟﻣﻔرط أو اﻟﻘﻠق اﻟزاﺋد ﺗﺟﺎﻩ ﻣﺧﺗﻠﻓ اﻷﻣور اﻟﺣﯾﺎﺗﯾﺔ اﻟﻣﺣﯾطﺔ ﺑك، ﺳواء ﻛﺎﻧت ﻣﺗﻌﻠﻘﺔ ﺑﺎﻟﻌﻣل، اﻟدراﺳﺔ، اﻟﻣﻧزل، أو ﻏﯾرھﺎ ﻣن اﻟﺟواﻧب اﻟﯾوﻣﯾﺔ؟ اﻋط اﻣﺛﻠﺔ ﻋﻠﻰ ﺑﻌض ﻣن ھذه اﻷﻣور وﻛﯾف ﯾؤﺛراﻟﺗﻔﻛﯾر و اﻟﻘﻠق ﺑﮭﺎ ﻋﻠﻰ أﻓﻛﺎرك وﺳﻠوﻛك ﺧﻼل اﻟﯾوم"
+    q2_label = "س2: ھل ﺗواﺟﮫ ﺻﻌوﺑﺔ ﻓﻲ اﻟﺳﯾطرة ﻋﻠﻰ أﻓﻛﺎرك اﻟﻘﻠﻘﺔ أو اﻟﺗﺣﻛم ﻓﻲ ﻣﺳﺗوى اﻟﻘﻠق اﻟذي ﺗﺷﻌر ﺑﮫ، ﺑﺣﯾث ﺗﺷﻌر أن اﻷﻣر ﺧﺎرج ﻋن إرادﺗك أو أﻧﮫ ﻣﺳﺗﻣر ﻋﻠﻰ ﻧﺣو ﯾرھﻘك؟ اﺟﻌل اﺟﺎﺑﺗك ﺗﻔﺻﯾﻠﯾﺔ ﺑﺣﯾث ﺗوﺿﺢ ﻛﯾف ﯾﻛون ﺧﺎرج ﻋﻥ ارادﺗك او اﻟﻰ اي ﻣدى ﯾرھﻘك"
     q3_label = "س3: ھل ﯾﺗراﻓق ﻣﻊ اﻟﺗﻔﻛﯾر اﻟﻣﻔرط أو اﻟﻘﻠق اﻟﻣﺳﺗﻣر ﺛﻼﺛﺔ أﻋراض أو أﻛﺛر ﻣن اﻷﻋراض اﻟﺗﺎﻟﯾﺔ: اﻟﺷﻌور ﺑﻌدم اﻻرﺗﯾﺎح أو ﺑﺿﻐط ﻧﻔﺳﻲ ﻛﺑﯾر، اﻹﺣﺳﺎس ﺑﺎﻟﺗﻌب واﻹرھﺎق ﺑﺳﮭوﻟﺔ، ﺻﻌوﺑﺔ واﺿﺣﺔ ﻓﻲ اﻟﺗرﻛﯾز، اﻟﺷﻌور ﺑﺎﻟﻌﺻﺑﯾﺔ اﻟزاﺋدة، ﺷد ﻋﺿﻠﻲ ﻣزﻣن، اﺿطراﺑﺎت ﻓﻲ اﻟﻧوم، وﻏﯾرھﺎ؟ اذكر كل عرض تعاني منه وهل يؤثر على مهامك اليومية مثل العمل أو الدراسة أو حياتك الاجتماعية؟ وﻛﯾف ﯾؤﺛرﻋﻠﻳك ﺑﺷﻛل ﯾوﻣﻲ؟"
     q4_label = "س4: ھل ﻣررت ﺑﻔﺗرة اﺳﺗﻣرت أﺳﺑوﻋﯾن أو أﻛﺛر ﻛﻧت ﺗﻌﺎﻧﻲ ﺧﻼﻟﮭﺎ ﻣن ﺧﻣﺳﺔ أﻋراض أو أﻛﺛر ﻣﻣﺎ ﯾﻠﻲ، ﻣﻊ ﺿرورة وﺟود ﻋرض اﻟﻣزاج اﻟﻣﻛﺗﺋب أو ﻓﻘدان اﻟﺷﻐف واﻻھﺗﻣﺎم؟ اذكر الأعراض التي عانيت منها بالتفصيل و كيف أثرت عليك؟"
     q5_label = "س5: ھل أدت اﻷﻋراض اﻟﺗﻲ ﻣررت ﺑﮭﺎ إﻟﻰ ﺷﻌورك ﺑﺿﯾق ﻧﻔﺳﻲ ﺷدﯾد أو إﻟﻰ ﺗﻌطﯾل واﺿﺢ ﻟﻘدرﺗك ﻋﻠﻰ أداء ﻣﮭﺎﻣك اﻟﯾوﻣﯾﺔ، ﺳواء ﻓﻲ ﺣﯾﺎﺗك اﻻﺟﺗﻣﺎﻋﯾﺔ، اﻟوظﯾﻔﯾﺔ، أو اﻟﺷﺧﺻﯾﺔ؟ ﻛﯾف ﻻﺣظت ﺗﺄﺛﯾر ذﻟك ﻋﻠﻳك وﻋﻠﻰ ﺗﻔﺎﻋﻼﺗك ﻣﻊ ﻣن ﺣوﻟك؟"
-    q6_label = "س6: ھل ھذه اﻷﻋراض اﻟﺗﻲ ﻋﺎﻧﯾت ﻣﻧﮭﺎ ﻟم ﺗﻛن ﻧﺎﺗﺟﺔ ﻋﻥ ﺗﺄﺛﯾر أي ﻣواد ﻣﺧدرة، أدوﯾﺔ ﻣﻌﯾﻧﺔ، أو ﺑﺳﺑب ﺣﺎﻟﺔ ﻣرﺿﯾﺔ ﻋﺿوﯾﺔ أﺧرى؟"
+    q6_label = "س6: ھل ھذه اﻷﻋراض اﻟﺗﻲ ﻋﺎﻧﯾت ﻣﻧﮭﺎ ﻟم ﺗﻛن ﻧﺎﺗﺟﺔ ﻋﻥ ﺗﺄﺛﯾر أي ﻣواد ﻣﺧدرة، أدوﯾﺔ ﻣﻌﯾﻧﺔ، أو ﺑﺳﺑب ﺣﺎﻟﺔ ﻣرﺿﯾﺔ ﻋﺿوﯾﺔ أﺧرى ﻗد ﺗﻛون أﺛرت ﻋﻠﻰ ﺳﻠوﻛك أو ﻣﺷﺎﻋرك ﺧﻼل ﺗﻠك اﻟﻔﺗرة؟"
 
     q1 = st.text_area(q1_label)
     q2 = st.text_area(q2_label)
@@ -124,6 +86,7 @@ def questionnaire():
             c.execute("INSERT INTO responses (username, gender, age, q1, q2, q3, q4, q5, q6) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                       (user, gender, age, q1, q2, q3, q4, q5, q6))
             conn.commit()
+
             headers = sheet.row_values(1)
             expected_headers = [
                 "اسم المستخدم", "الجنس", "العمر",
@@ -132,26 +95,30 @@ def questionnaire():
             if headers != expected_headers:
                 sheet.delete_rows(1)
                 sheet.insert_row(expected_headers, index=1)
-            sheet.append_row([user, gender, age, q1, q2, q3, q4, q5, q6])
-            st.success("✅ تم حفظ إجاباتك.")
-        else:
-            st.error("⚠️ الرجاء تسجيل الدخول أولاً.")
 
-# 🧠 واجهة العنوان
+            sheet.append_row([user, gender, age, q1, q2, q3, q4, q5, q6])
+            st.success("✅ تم حفظ الإجابات.")
+        else:
+            st.error("⚠️ حدث خطأ: لم يتم تسجيل الدخول. الرجاء تسجيل الدخول أولاً.")
+
+# Page Header UI
 st.markdown("""
-    <div class='title-container'>
-        <h1>طَمّني</h1>
-        <h3>منصة تقييم الصحة النفسية باستخدام الذكاء الاصطناعي</h3>
-        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='90'/>
+    <div style='background-color:#001f4d;padding:30px;border-radius:10px;'>
+        <h1 style='text-align:center;color:white;'>طَمّني</h1>
+    </div>
+    <div style='text-align:center;margin-top:40px;'>
+        <h3 style='color:#666;'>Tameni platform for mental health diagnosis using AI</h3>
+        <h2 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h2>
+        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='brain'/>
     </div>
 """, unsafe_allow_html=True)
 
-# 🌐 التنقل
+# Navigation
 if 'page' not in st.session_state:
     st.session_state.page = "landing"
 
 if st.session_state.page == "landing":
-    if st.button("تسجيل الدخول / إنشاء حساب"):
+    if st.button("Log in / Sign up"):
         st.session_state.page = "auth"
     st.stop()
 
