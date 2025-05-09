@@ -98,11 +98,15 @@ def questionnaire():
 # ----------------- UI Header -----------------
 
 st.markdown("""
-<div style='text-align:center; margin-top: 40px;'>
-    <h1 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h1>
-    <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='brain'/>
-</div>
+    <div style='background-color:#001f4d;width:100%;padding:20px 0;text-align:center;'>
+        <h1 style='color:white;margin:0;'>طَمّني</h1>
+    </div>
+    <div style='text-align:center;margin-top:40px;'>
+        <h2 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h2>
+        <img src='https://cdn-icons-png.flaticon.com/512/4140/4140048.png' width='100' alt='brain'/>
+    </div>
 """, unsafe_allow_html=True)
+
 
 # ----------------- Navigation -----------------
 if 'page' not in st.session_state:
