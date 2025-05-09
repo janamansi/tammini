@@ -8,7 +8,8 @@ db = client["tammini_db"]
 users_col = db["users"]
 responses_col = db["responses"]
 
-st.set_page_config(page_title="منصة طَمّني", layout="centered", page_icon="🧠")
+st.set_page_config(page_title="طَمّني", layout="centered", page_icon="🧠")
+
 
 # ----------------- Auth -----------------
 def signup():
@@ -96,55 +97,42 @@ def questionnaire():
 
 # ----------------- UI Header -----------------
 st.markdown("""
-<style>
-body {
-    background-image: url('https://raw.githubusercontent.com/streamlit/example-data/main/topographic-pattern-light.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-.header-bar {
-    background-color: #001f4d;
-    padding: 10px 30px;
-    color: white;
-    font-size: 28px;
-    text-align: left;
-    font-family: 'Arial';
-}
-.center-box {
-    text-align: center;
-    margin-top: 100px;
-}
-.center-box h2 {
-    color: #003366;
-    font-size: 32px;
-    line-height: 1.8;
-}
-.login-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 10px 30px;
-    color: #003366;
-    border: 2px solid #003366;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: 0.3s;
-}
-.login-button:hover {
-    background-color: #003366;
-    color: white;
-}
-</style>
+    <style>
+    body {
+        background-color: #f2f7f5; /* soft mint background */
+    }
+    .header-bar {
+        background-color: #001f4d;
+        padding: 20px 30px;
+        color: white;
+        font-size: 28px;
+        text-align: left;
+        font-family: 'Arial';
+    }
+    .center-box {
+        text-align: center;
+        margin-top: 100px;
+    }
+    .center-box h2 {
+        color: #003366;
+        font-size: 32px;
+        line-height: 1.8;
+    }
+    </style>
 
-<div class="header-bar">طمني</div>
+    <div class="header-bar">طمني</div>
+""", unsafe_allow_html=True)
 
+# Main Title & Arabic Subtitle
+st.markdown("""
 <div class="center-box">
     <h2>منصة طمني لتقييم<br>الصحة النفسية باستخدام الذكاء الصناعي</h2>
-    <a class="login-button" href="#">تسجيل الدخول / إنشاء حساب</a>
 </div>
 """, unsafe_allow_html=True)
 
-
+# ✅ Actual button with logic
+if st.button("تسجيل الدخول / إنشاء حساب", use_container_width=True):
+    st.session_state.page = "auth"
 # ----------------- Navigation -----------------
 if 'page' not in st.session_state:
     st.session_state.page = "landing"
