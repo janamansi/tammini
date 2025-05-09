@@ -7,12 +7,13 @@ Original file is located at
     https://colab.research.google.com/drive/1StTFnlJuLr177o5LSemfK2M8CNoX6e3j
 """
 
+
 !pip install streamlit pymongo pyngrok
 
 from pyngrok import ngrok
 
-# Run Streamlit in background
-! streamlit run tamminimongodp.py &
+
+!streamlit run tamminimongodp (2).py &
 
 
 public_url = ngrok.connect(port=8501)
