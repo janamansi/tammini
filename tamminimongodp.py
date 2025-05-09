@@ -96,43 +96,15 @@ def questionnaire():
 
 
 # ----------------- UI Header -----------------
-st.markdown("""
-    <style>
-    body {
-        background-color: #f2f7f5; /* soft mint background */
-    }
-    .header-bar {
-        background-color: #001f4d;
-        padding: 20px 30px;
-        color: white;
-        font-size: 28px;
-        text-align: left;
-        font-family: 'Arial';
-    }
-    .center-box {
-        text-align: center;
-        margin-top: 100px;
-    }
-    .center-box h2 {
-        color: #003366;
-        font-size: 32px;
-        line-height: 1.8;
-    }
-    </style>
 
-    <div class="header-bar">طمني</div>
+st.markdown("""
+    <hr>
+    <div style='text-align:center;margin-top:50px;'>
+        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='60' alt='brain'/>
+        <p style='color:#003366;font-size:18px;'>طَمّني</p>
+    </div>
 """, unsafe_allow_html=True)
 
-# Main Title & Arabic Subtitle
-st.markdown("""
-<div class="center-box">
-    <h2>منصة طمني لتقييم<br>الصحة النفسية باستخدام الذكاء الصناعي</h2>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ Actual button with logic
-if st.button("تسجيل الدخول / إنشاء حساب", use_container_width=True):
-    st.session_state.page = "auth"
 # ----------------- Navigation -----------------
 if 'page' not in st.session_state:
     st.session_state.page = "landing"
