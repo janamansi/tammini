@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 
 # MongoDB Atlas connection
-client = MongoClient("mongodb+srv://tammeni25:MytamminiPass25!25@tammini.pcsh9ci.mongodb.net/?retryWrites=true&w=majority&appName=tammini")
+client = MongoClient("mongodb+srv://tammeni25:MytamminiPass25@tammini.pcsh9ci.mongodb.net/?retryWrites=true&w=majority&appName=tammini")
 db = client["tammini_db"]
 users_col = db["users"]
 responses_col = db["responses"]
