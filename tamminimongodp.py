@@ -103,7 +103,7 @@ st.markdown("""
     </div>
     <div style='text-align:center;margin-top:40px;'>
         
-        <h2 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h2>
+        <h1 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h1>
         <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='brain'/>
     </div>
 """, unsafe_allow_html=True)
