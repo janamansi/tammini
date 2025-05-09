@@ -96,13 +96,52 @@ def questionnaire():
 
 # ----------------- UI Header -----------------
 st.markdown("""
-    <div style='background-color:#001f4d;width:100%;padding:20px 0;text-align:center;'>
-        <h1 style='color:white;margin:0;'>طَمّني</h1>
-    </div>
-    <div style='text-align:center;margin-top:40px;'>
-        <h2 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h2>
-        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='icon'/>
-    </div>
+<style>
+body {
+    background-image: url('https://raw.githubusercontent.com/streamlit/example-data/main/topographic-pattern-light.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.header-bar {
+    background-color: #001f4d;
+    padding: 10px 30px;
+    color: white;
+    font-size: 28px;
+    text-align: left;
+    font-family: 'Arial';
+}
+.center-box {
+    text-align: center;
+    margin-top: 100px;
+}
+.center-box h2 {
+    color: #003366;
+    font-size: 32px;
+    line-height: 1.8;
+}
+.login-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 30px;
+    color: #003366;
+    border: 2px solid #003366;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+.login-button:hover {
+    background-color: #003366;
+    color: white;
+}
+</style>
+
+<div class="header-bar">طمني</div>
+
+<div class="center-box">
+    <h2>منصة طمني لتقييم<br>الصحة النفسية باستخدام الذكاء الصناعي</h2>
+    <a class="login-button" href="#">تسجيل الدخول / إنشاء حساب</a>
+</div>
 """, unsafe_allow_html=True)
 
 
