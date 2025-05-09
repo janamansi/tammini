@@ -65,17 +65,17 @@ def questionnaire():
 
         answers = [q1, q2, q3, q4, q5, q6]
 
-        # ✅ Check for empty answers
+        # Check for empty answers
         if any(ans.strip() == "" for ans in answers):
             st.warning("⚠️ الرجاء تعبئة جميع الإجابات قبل الإرسال.")
             return
 
-        # ✅ Check for English characters
+        # Check for English characters
         if any(re.search(r"[a-zA-Z]", ans) for ans in answers):
             st.warning("⚠️ الرجاء عدم استخدام اللغة الإنجليزية في الإجابات.")
             return
 
-        # ✅ All checks passed — insert into MongoDB
+       #insert into MongoDB
         responses_col.insert_one({
             "username": user,
             "gender": gender,
@@ -96,15 +96,15 @@ def questionnaire():
 
 # ----------------- UI Header -----------------
 st.markdown("""
-    <div style='background-color:#001f4d;padding:30px;border-radius:10px;'>
-        <h1 style='text-align:center;color:white;'>طَمّني</h1>
+    <div style='background-color:#001f4d;width:100%;padding:20px 0;text-align:center;'>
+        <h1 style='color:white;margin:0;'>طَمّني</h1>
     </div>
     <div style='text-align:center;margin-top:40px;'>
-        <h3 style='color:#666;'>Tameni platform for mental health diagnosis using AI</h3>
         <h2 style='color:#003366;'>منصة طَمّني لتقييم الصحة النفسية باستخدام الذكاء الصناعي</h2>
-        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='brain'/>
+        <img src='https://cdn-icons-png.flaticon.com/512/4320/4320337.png' width='100' alt='icon'/>
     </div>
 """, unsafe_allow_html=True)
+
 
 # ----------------- Navigation -----------------
 if 'page' not in st.session_state:
