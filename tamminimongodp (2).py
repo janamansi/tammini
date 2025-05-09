@@ -9,6 +9,14 @@ Original file is located at
 
 !pip install streamlit pymongo pyngrok
 
+from pyngrok import ngrok
+
+# Run Streamlit in background
+! streamlit run tamminimongodp.py &
+
+
+public_url = ngrok.connect(port=8501)
+print("✅ Streamlit is running at:", public_url)
 
 import streamlit as st
 from pymongo import MongoClient
